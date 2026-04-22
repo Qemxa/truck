@@ -1,0 +1,6 @@
+{
+  "name": "AutoTracker Pro",
+  "description": "Production-ready PWA for internal vehicle fleet and maintenance tracking. Features management for clients, vehicles, and service records with role-based access.",
+  "requestFramePermissions": [],
+  "majorCapabilities": []
+}
