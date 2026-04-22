@@ -131,30 +131,32 @@ export default function Payments() {
     .reduce((sum, r) => sum + Number(r.total_cost), 0);
 
   return (
-    <div className="p-8 space-y-8 animate-in fade-in duration-500">
+    <div className="p-4 sm:p-8 space-y-8 animate-in fade-in duration-500">
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
         <div>
-          <h1 className="text-3xl font-black text-slate-800 tracking-tight">გადახდების მართვა</h1>
-          <p className="text-slate-500 font-medium">ფინანსური ისტორია და ანგარიშსწორება</p>
+          <h1 className="text-2xl sm:text-3xl font-black text-slate-800 tracking-tight">გადახდების მართვა</h1>
+          <p className="text-xs sm:text-sm text-slate-500 font-medium">ფინანსური ისტორია და ანგარიშსწორება</p>
         </div>
 
-        <div className="bg-amber-50 border border-amber-100 p-4 rounded-2xl flex items-center gap-4 shadow-sm">
-          <div className="w-12 h-12 bg-amber-500 rounded-xl flex items-center justify-center text-white shadow-lg shadow-amber-500/20">
-            <DollarSign className="w-6 h-6" />
+        <div className="flex flex-col sm:flex-row items-center gap-4">
+          <div className="bg-amber-50 border border-amber-100 p-4 rounded-2xl flex items-center gap-4 shadow-sm w-full sm:w-auto">
+            <div className="w-12 h-12 bg-amber-500 rounded-xl flex items-center justify-center text-white shadow-lg shadow-amber-500/20">
+              <DollarSign className="w-6 h-6" />
+            </div>
+            <div>
+              <p className="text-[10px] font-black text-amber-600 uppercase tracking-widest">დავალიანება</p>
+              <p className="text-xl sm:text-2xl font-black text-slate-900 font-mono">₾{totalPending.toLocaleString()}</p>
+            </div>
           </div>
-          <div>
-            <p className="text-[10px] font-black text-amber-600 uppercase tracking-widest">ჯამური დავალიანება</p>
-            <p className="text-2xl font-black text-slate-900 font-mono">₾{totalPending.toLocaleString()}</p>
-          </div>
-        </div>
 
-        <Button 
-          onClick={exportToExcel}
-          className="bg-emerald-600 hover:bg-emerald-700 text-white rounded-2xl font-bold h-12 px-6 shadow-lg shadow-emerald-600/20"
-        >
-          <Download className="w-4 h-4 mr-2" />
-          ექსპორტი (Excel)
-        </Button>
+          <Button 
+            onClick={exportToExcel}
+            className="bg-emerald-600 hover:bg-emerald-700 text-white rounded-2xl font-bold h-12 px-6 shadow-lg shadow-emerald-600/20 w-full sm:w-auto"
+          >
+            <Download className="w-4 h-4 mr-2" />
+            ექსპორტი
+          </Button>
+        </div>
       </div>
 
       <div className="flex flex-col md:flex-row gap-4">
@@ -167,11 +169,11 @@ export default function Payments() {
             onChange={(e) => setSearch(e.target.value)}
           />
         </div>
-        <div className="flex bg-slate-100 p-1 rounded-xl">
+        <div className="flex bg-slate-100 p-1 rounded-xl overflow-x-auto no-scrollbar">
           <Button 
             variant="ghost" 
             size="sm"
-            className={cn("rounded-lg px-4 font-bold text-xs uppercase tracking-wider", filter === 'all' ? "bg-white shadow-sm" : "text-slate-500")}
+            className={cn("rounded-lg px-4 font-bold text-[10px] uppercase tracking-wider flex-1 sm:flex-none", filter === 'all' ? "bg-white shadow-sm" : "text-slate-500")}
             onClick={() => setFilter('all')}
           >
             ყველა
@@ -179,7 +181,7 @@ export default function Payments() {
           <Button 
             variant="ghost" 
             size="sm"
-            className={cn("rounded-lg px-4 font-bold text-xs uppercase tracking-wider", filter === 'pending' ? "bg-white shadow-sm text-amber-600" : "text-slate-500")}
+            className={cn("rounded-lg px-4 font-bold text-[10px] uppercase tracking-wider flex-1 sm:flex-none whitespace-nowrap", filter === 'pending' ? "bg-white shadow-sm text-amber-600" : "text-slate-500")}
             onClick={() => setFilter('pending')}
           >
             გადასახდელი
@@ -187,7 +189,7 @@ export default function Payments() {
           <Button 
             variant="ghost" 
             size="sm"
-            className={cn("rounded-lg px-4 font-bold text-xs uppercase tracking-wider", filter === 'paid' ? "bg-white shadow-sm text-emerald-600" : "text-slate-500")}
+            className={cn("rounded-lg px-4 font-bold text-[10px] uppercase tracking-wider flex-1 sm:flex-none whitespace-nowrap", filter === 'paid' ? "bg-white shadow-sm text-emerald-600" : "text-slate-500")}
             onClick={() => setFilter('paid')}
           >
             გადახდილი
@@ -195,7 +197,69 @@ export default function Payments() {
         </div>
       </div>
 
-      <div className="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
+      {/* Mobile Payment Cards */}
+      <div className="grid grid-cols-1 gap-4 lg:hidden">
+        {loading ? (
+          <div className="text-center py-12 text-slate-400">იტვირთება...</div>
+        ) : filteredRecords.length === 0 ? (
+          <div className="text-center py-12 text-slate-400">ჩანაწერები ვერ მოიძებნა</div>
+        ) : filteredRecords.map((record) => (
+          <div key={record.id} className="bg-white rounded-2xl border border-slate-200 p-4 shadow-sm space-y-4">
+            <div className="flex justify-between items-center">
+              <div className="flex items-center gap-2">
+                <Calendar className="w-4 h-4 text-slate-400" />
+                <span className="text-xs font-bold text-slate-700">{new Date(record.date).toLocaleDateString('ka-GE')}</span>
+              </div>
+              <div className="text-right">
+                {record.payment_status === 'paid' ? (
+                  <Badge variant="outline" className="bg-emerald-50 text-emerald-700 border-none rounded-lg px-2 py-0.5 text-[8px] font-black uppercase">
+                    გადახდილი
+                  </Badge>
+                ) : (
+                  <Badge variant="outline" className="bg-amber-50 text-amber-700 border-none rounded-lg px-2 py-0.5 text-[8px] font-black uppercase">
+                    გადასახდელი
+                  </Badge>
+                )}
+              </div>
+            </div>
+
+            <div className="py-2 border-y border-slate-50">
+              <div className="flex justify-between items-start">
+                <div>
+                  <div className="text-sm font-black text-slate-900">{record.vehicles?.plate_number}</div>
+                  <div className="text-[10px] text-slate-500 font-bold uppercase">{record.vehicles?.make} {record.vehicles?.model}</div>
+                  <div className="text-[10px] text-indigo-500 font-bold mt-1 uppercase">{record.vehicles?.clients?.name}</div>
+                </div>
+                <div className="text-right">
+                  <div className="text-xl font-black text-slate-900 font-mono italic">₾{record.total_cost}</div>
+                  <div className="flex items-center justify-end gap-1 text-[9px] font-black text-slate-400 uppercase mt-1 italic">
+                    {getPaymentMethodIcon(record.payment_method)}
+                    {getPaymentMethodLabel(record.payment_method)}
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div className="pt-1">
+              {record.payment_status === 'pending' ? (
+                <Button 
+                  className="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs h-11 rounded-xl"
+                  onClick={() => setConfirmPaymentRecord(record)}
+                >
+                  გადახდის დადასტურება
+                </Button>
+              ) : (
+                <div className="flex items-center justify-center gap-2 text-[10px] font-bold text-slate-400 uppercase bg-slate-50 py-2 rounded-lg italic">
+                  <CheckCircle2 className="w-3 h-3 text-emerald-500" />
+                  გადახდილია: {record.payment_date ? new Date(record.payment_date).toLocaleDateString('ka-GE') : '-'}
+                </div>
+              )}
+            </div>
+          </div>
+        ))}
+      </div>
+
+      <div className="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden hidden lg:block">
         <Table>
           <TableHeader>
             <TableRow className="bg-slate-50/50">

@@ -139,11 +139,14 @@ export default function Maintenance() {
   });
 
   return (
-    <div className="p-8 space-y-6">
-      <div className="flex items-center justify-between">
-        <h1 className="text-2xl font-bold text-slate-800">მომსახურების ისტორია</h1>
+    <div className="p-4 sm:p-8 space-y-6">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+        <div>
+          <h1 className="text-xl sm:text-2xl font-black text-slate-800 tracking-tight">მომსახურების ისტორია</h1>
+          <p className="text-xs sm:text-sm text-slate-500 font-medium">სრული სერვისული ისტორია და სტატუსები</p>
+        </div>
         {isAdmin && (
-          <Button variant="outline" onClick={exportToExcel}>
+          <Button variant="outline" onClick={exportToExcel} className="w-full sm:w-auto h-11 font-bold text-xs uppercase tracking-wider rounded-xl">
             <Download className="w-4 h-4 mr-2" />
             ექსპორტი (Excel)
           </Button>
@@ -151,16 +154,121 @@ export default function Maintenance() {
       </div>
 
       <div className="relative">
-        <Search className="absolute left-3 top-3 w-4 h-4 text-slate-400" />
+        <Search className="absolute left-4 top-3.5 w-4 h-4 text-slate-400" />
         <Input 
           placeholder="ძიება ავტომობილით, კატეგორიით ან აღწერით..." 
-          className="pl-10"
+          className="pl-12 h-11 rounded-xl bg-white border-slate-200"
           value={search}
           onChange={(e) => setSearch(e.target.value)}
         />
       </div>
 
-      <div className="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden">
+      {/* Mobile Card List */}
+      <div className="grid grid-cols-1 gap-4 lg:hidden">
+        {loading ? (
+          <div className="text-center py-12 text-slate-400">იტვირთება...</div>
+        ) : filteredRecords.length === 0 ? (
+          <div className="text-center py-12 text-slate-400">ჩანაწერები ვერ მოიძებნა</div>
+        ) : filteredRecords.map((record) => (
+          <div key={record.id} className="bg-white rounded-2xl border border-slate-200 p-4 shadow-sm space-y-4">
+            <div className="flex justify-between items-start">
+              <div className="flex items-center gap-2">
+                <Calendar className="w-4 h-4 text-slate-400" />
+                <span className="text-sm font-bold text-slate-700">{new Date(record.date).toLocaleDateString('ka-GE')}</span>
+              </div>
+              <div className="flex flex-col items-end gap-1.5">
+                {record.status === 'approved' ? (
+                  <Badge className="bg-indigo-50 text-indigo-700 border-indigo-100 rounded-lg px-2 py-0.5 text-[8px] font-black uppercase w-fit">
+                    დამოწმებული
+                  </Badge>
+                ) : (
+                  <div className="flex flex-col gap-1 items-end">
+                    <Badge className="bg-rose-50 text-rose-700 border-rose-100 rounded-lg px-2 py-0.5 text-[8px] font-black uppercase w-fit animate-pulse">
+                      მოლოდინში
+                    </Badge>
+                    {record.previous_data && (
+                      <Badge variant="outline" className="text-[7px] border-amber-200 bg-amber-50 text-amber-700 font-bold uppercase w-fit py-0">
+                        ჩასწორებული
+                      </Badge>
+                    )}
+                  </div>
+                )}
+              </div>
+            </div>
+
+            <div className="flex items-center gap-3 py-3 border-y border-slate-50">
+              <div className="w-10 h-10 bg-slate-50 rounded-xl flex items-center justify-center text-indigo-500">
+                <Car className="w-5 h-5" />
+              </div>
+              <div>
+                <div className="text-sm font-black text-slate-900">{record.vehicles?.plate_number}</div>
+                <div className="text-[10px] text-slate-500 font-bold uppercase">{record.vehicles?.make} {record.vehicles?.model}</div>
+              </div>
+            </div>
+
+            <div className="space-y-2">
+              <Badge variant="outline" className="bg-white text-indigo-700 border-indigo-100 font-bold text-[9px] uppercase">
+                {record.category}
+              </Badge>
+              <p className="text-xs text-slate-600 line-clamp-2 leading-relaxed">{record.description}</p>
+            </div>
+
+            <div className="flex items-center justify-between pt-2">
+              <div>
+                <div className="text-lg font-black text-slate-900 font-mono italic">₾{record.total_cost}</div>
+                <div className="text-[10px] text-slate-400 font-bold uppercase italic">{record.mileage.toLocaleString()} კმ</div>
+              </div>
+              <div className="flex items-center gap-2">
+                <Link to={`/maintenance/${record.id}/edit`}>
+                  <Button size="icon" variant="ghost" className="h-9 w-9 text-slate-400 hover:text-indigo-600 hover:bg-indigo-50 border border-slate-100 rounded-xl">
+                    <Edit className="w-4 h-4" />
+                  </Button>
+                </Link>
+                <div className="flex items-center gap-2">
+                  {isAdmin && record.status === 'pending' && (
+                    <>
+                      {record.previous_data && (
+                        <Button 
+                          size="icon" 
+                          variant="ghost" 
+                          className="h-9 w-9 text-indigo-500 hover:bg-indigo-50 border border-slate-100 rounded-xl"
+                          onClick={() => setCompareRecord(record)}
+                        >
+                          <Eye className="w-5 h-5" />
+                        </Button>
+                      )}
+                      <Button 
+                        size="icon" 
+                        variant="ghost" 
+                        className="h-9 w-9 text-emerald-600 hover:bg-emerald-50 border border-slate-100 rounded-xl"
+                        onClick={async () => {
+                          const { error } = await supabase
+                            .from('service_records')
+                            .update({ status: 'approved' })
+                            .eq('id', record.id);
+                          if (!error) fetchRecords();
+                        }}
+                      >
+                        <CheckCircle className="w-5 h-5" />
+                      </Button>
+                    </>
+                  )}
+                  {isAdmin && record.payment_status === 'pending' && (
+                    <Button 
+                      className="bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-[10px] uppercase h-9 px-4 rounded-xl"
+                      onClick={() => setConfirmPaymentRecord(record)}
+                    >
+                      გადახდა
+                    </Button>
+                  )}
+                </div>
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
+
+      <div className="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden hidden lg:block">
         <Table>
           <TableHeader>
             <TableRow className="bg-slate-50">

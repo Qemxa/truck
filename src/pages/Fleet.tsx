@@ -40,11 +40,14 @@ export default function Fleet() {
   );
 
   return (
-    <div className="p-8 space-y-6">
-      <div className="flex items-center justify-between">
-        <h1 className="text-2xl font-bold text-slate-800">ავტოპარკი</h1>
-        <Link to="/fleet/new">
-          <Button className="bg-indigo-600 hover:bg-indigo-700">
+    <div className="p-4 sm:p-8 space-y-6">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+        <div>
+          <h1 className="text-xl sm:text-2xl font-black text-slate-800 tracking-tight">ავტოპარკი</h1>
+          <p className="text-xs sm:text-sm text-slate-500 font-medium">თქვენს ბაზაში არსებული ავტომობილები</p>
+        </div>
+        <Link to="/fleet/new" className="w-full sm:w-auto">
+          <Button className="bg-indigo-600 hover:bg-indigo-700 w-full sm:w-auto h-11 rounded-xl font-bold shadow-lg shadow-indigo-600/20">
             <Plus className="w-4 h-4 mr-2" />
             ახალი ავტომობილი
           </Button>
@@ -52,16 +55,65 @@ export default function Fleet() {
       </div>
 
       <div className="relative">
-        <Search className="absolute left-3 top-3 w-4 h-4 text-slate-400" />
+        <Search className="absolute left-4 top-3.5 w-4 h-4 text-slate-400" />
         <Input 
           placeholder="ძიება ნომრით, VIN კოდით ან მოდელით..." 
-          className="pl-10"
+          className="pl-12 h-11 rounded-xl bg-white border-slate-200"
           value={search}
           onChange={(e) => setSearch(e.target.value)}
         />
       </div>
 
-      <div className="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden">
+      {/* Mobile Fleet Cards */}
+      <div className="grid grid-cols-1 gap-4 lg:hidden">
+        {loading ? (
+          <div className="text-center py-12 text-slate-400">იტვირთება...</div>
+        ) : filteredVehicles.length === 0 ? (
+          <div className="text-center py-12 text-slate-400 italic">ავტომობილები ვერ მოიძებნა</div>
+        ) : filteredVehicles.map((vehicle) => (
+          <div key={vehicle.id} className="bg-white rounded-2xl border border-slate-200 p-4 shadow-sm space-y-4">
+            <div className="flex items-center gap-4">
+              <div className="w-12 h-12 bg-slate-50 rounded-xl flex items-center justify-center text-indigo-500">
+                <Car className="w-6 h-6" />
+              </div>
+              <div className="flex-1 min-w-0">
+                <div className="text-sm font-black text-slate-900 truncate">{vehicle.make} {vehicle.model}</div>
+                <div className="text-[10px] text-slate-500 font-bold uppercase">{vehicle.year} წელი • {vehicle.vin_code}</div>
+              </div>
+            </div>
+
+            <div className="flex items-center justify-between py-3 border-y border-slate-50">
+              <div className="space-y-1">
+                <p className="text-[9px] font-black text-slate-400 uppercase tracking-tighter">სახელმწიფო ნომერი</p>
+                <Badge variant="outline" className="bg-slate-900 text-white font-mono text-sm border-none rounded-md px-2 py-0.5">
+                  {vehicle.plate_number}
+                </Badge>
+              </div>
+              <div className="text-right space-y-1">
+                <p className="text-[9px] font-black text-slate-400 uppercase tracking-tighter">მფლობელი</p>
+                <p className="text-xs font-bold text-slate-700">{vehicle.clients?.name || '-'}</p>
+              </div>
+            </div>
+
+            <div className="flex items-center gap-2">
+              <Link to={`/fleet/${vehicle.id}/service/new`} className="flex-1">
+                <Button variant="outline" className="w-full h-10 border-emerald-100 text-emerald-600 font-bold text-xs rounded-xl hover:bg-emerald-50">
+                  <Wrench className="w-3.5 h-3.5 mr-2" />
+                  სერვისი
+                </Button>
+              </Link>
+              <Link to={`/fleet/${vehicle.id}`} className="flex-1">
+                <Button className="w-full h-10 bg-slate-900 text-white font-bold text-xs rounded-xl">
+                  <Eye className="w-3.5 h-3.5 mr-2" />
+                  პროფილი
+                </Button>
+              </Link>
+            </div>
+          </div>
+        ))}
+      </div>
+
+      <div className="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden hidden lg:block">
         <Table>
           <TableHeader>
             <TableRow className="bg-slate-50">

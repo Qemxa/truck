@@ -1,20 +1,50 @@
-<div align="center">
-<img width="1200" height="475" alt="GHBanner" src="https://github.com/user-attachments/assets/0aa67016-6eaf-458a-adb2-6e31a0763ed6" />
-</div>
+# 🚗 ავტო-სერვისის მართვის სისტემა (Manual)
 
-# Run and deploy your AI Studio app
+ეს არის სრული სახელმძღვანელო პროექტის სამართავად, გასაშვებად და განახლებისთვის.
 
-This contains everything you need to run your app locally.
+## 🚀 1. როგორ გავუშვათ ონლაინ (Deployment)
 
-View your app in AI Studio: https://ai.studio/apps/15c747f3-1856-4b16-9993-d3380b0d3673
+ვინაიდან პროექტი უკვე გაქვთ GitHub-ზე, საუკეთესო და უფასო გზა არის **Vercel** ან **Netlify**.
 
-## Run Locally
+### Vercel-ზე გაშვების ნაბიჯები:
+1. დარეგისტრირდით [Vercel.com](https://vercel.com)-ზე თქვენი GitHub ანგარიშით.
+2. დააჭირეთ **"Add New"** -> **"Project"**.
+3. აირჩიეთ თქვენი GitHub რეპოზიტორი და დააჭირეთ **"Import"**.
+4. **მნიშვნელოვანი ფაზა (Environment Variables):**
+   სანამ "Deploy"-ს დააჭერთ, გახსენით სექცია "Environment Variables" და დაამატეთ Supabase-ის მონაცემები (რომლებსაც ნახავთ Supabase-ის settings -> API-ში):
+   - `VITE_SUPABASE_URL` = (თქვენი URL)
+   - `VITE_SUPABASE_ANON_KEY` = (თქვენი Key)
+5. დააჭირეთ **"Deploy"**. რამდენიმე წუთში თქვენი საიტი მზად იქნება!
 
-**Prerequisites:**  Node.js
+---
 
+## 🛠 2. როგორ შევცვალოთ რამე მომავალში?
 
-1. Install dependencies:
-   `npm install`
-2. Set the `GEMINI_API_KEY` in [.env.local](.env.local) to your Gemini API key
-3. Run the app:
-   `npm run dev`
+სისტემა აწყობილია "Continuous Deployment" პრინციპით:
+1. შეცვალეთ კოდი (ამ პლატფორმაზე ან თქვენს კომპიუტერში VS Code-ში).
+2. გააკეთეთ **Push** GitHub-ზე.
+3. Vercel ავტომატურად დაინახავს ცვლილებას და 2-3 წუთში თავად განაახლებს საიტს ონლაინ. თქვენ არაფრის ხელახლა ატვირთვა არ დაგჭირდებათ.
+
+---
+
+## 🗄 3. ბაზის მართვა (Supabase)
+
+პროექტი იყენებს Supabase-ს. თუ დაგჭირდებათ მონაცემების პირდაპირ ნახვა ან წაშლა:
+1. შედით [database.new](https://database.new) (Supabase Console).
+2. **Table Editor** სექციაში ნახავთ ცხრილებს: `vehicles`, `clients`, `service_records`.
+3. **SQL Editor**-ში შეგიძლიათ გაუშვათ ბრძანებები (მაგალითად, ახალი სვეტის დასამატებლად).
+
+---
+
+## 🏗 პროექტის სტრუქტურა (დეველოპერებისთვის)
+
+- `src/pages/` - აქ არის საიტის ყველა გვერდი (დებორდი, ისტორია, ავტომობილები).
+- `src/components/` - აქ არის მეორადი დეტალები (ღილაკები, ფორმები).
+- `src/hooks/` - აქ არის ლოგიკა (მაგალითად `useAuth` როლების სამართავად).
+- `supabase_schema.sql` - აქ წერია ბაზის სრული სტრუქტურა.
+
+---
+
+## 🔑 პაროლები და წვდომა
+
+ამჟამად სისტემაში Admin-ის უფლება მიბმულია კონკრეტულ იმეილზე `useAuth.tsx` ფაილში. თუ გსურთ სხვა ადამიანსაც მისცეთ ადმინის უფლება, უნდა შეცვალოთ ის ფაილი ან დაამატოთ `admins` ცხრილი ბაზაში.

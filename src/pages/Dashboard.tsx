@@ -111,38 +111,38 @@ export default function Dashboard() {
   }
 
   return (
-    <div className="p-8 flex flex-col flex-1 overflow-auto animate-in fade-in duration-500">
+    <div className="p-4 sm:p-8 flex flex-col flex-1 overflow-auto animate-in fade-in duration-500">
       {/* Header & Filter */}
-      <div className="flex flex-col md:flex-row md:items-center justify-between mb-8 gap-4">
+      <div className="flex flex-col md:flex-row md:items-center justify-between mb-8 gap-6">
         <div>
-          <h1 className="text-3xl font-black text-slate-800 tracking-tight">მიმოხილვა</h1>
-          <p className="text-slate-500 font-medium">სწრაფი სტატისტიკა და ანალიტიკა</p>
+          <h1 className="text-2xl sm:text-3xl font-black text-slate-800 tracking-tight">მიმოხილვა</h1>
+          <p className="text-xs sm:text-sm text-slate-500 font-medium">სწრაფი სტატისტიკა და ანალიტიკა</p>
         </div>
         
-        <div className="flex flex-col md:flex-row items-center gap-3">
+        <div className="flex flex-col sm:flex-row items-center gap-3 w-full md:w-auto">
           {isAdmin && (
-            <div className="flex flex-col md:flex-row items-center gap-2">
+            <div className="flex flex-col sm:flex-row items-center gap-2 w-full sm:w-auto">
               {timeFilter === 'custom' && (
-                <div className="flex items-center gap-2 mr-2 animate-in fade-in slide-in-from-right-2 duration-300">
+                <div className="flex items-center gap-2 w-full sm:w-auto animate-in fade-in slide-in-from-right-2 duration-300">
                   <Input 
                     type="date" 
-                    className="h-10 text-xs font-bold rounded-xl border-slate-200" 
+                    className="h-10 text-[10px] font-bold rounded-xl border-slate-200 flex-1 sm:w-32" 
                     value={customRange.start}
                     onChange={(e) => setCustomRange(p => ({...p, start: e.target.value}))}
                   />
                   <span className="text-slate-400 font-bold">-</span>
                   <Input 
                     type="date" 
-                    className="h-10 text-xs font-bold rounded-xl border-slate-200"
+                    className="h-10 text-[10px] font-bold rounded-xl border-slate-200 flex-1 sm:w-32"
                     value={customRange.end}
                     onChange={(e) => setCustomRange(p => ({...p, end: e.target.value}))}
                   />
                 </div>
               )}
-              <div className="flex items-center gap-2 bg-white border border-slate-200 px-4 py-2 rounded-2xl shadow-sm">
+              <div className="flex items-center gap-2 bg-white border border-slate-200 px-4 py-2 rounded-2xl shadow-sm w-full sm:w-auto">
                 <Clock className="w-4 h-4 text-slate-400" />
                 <Select value={timeFilter} onValueChange={setTimeFilter}>
-                  <SelectTrigger className="border-none shadow-none bg-transparent h-auto p-0 focus:ring-0 text-sm font-bold text-slate-700 w-[140px]">
+                  <SelectTrigger className="border-none shadow-none bg-transparent h-auto p-0 focus:ring-0 text-sm font-bold text-slate-700 w-full sm:w-[130px]">
                     <SelectValue />
                   </SelectTrigger>
                   <SelectContent className="rounded-2xl border-slate-200 shadow-xl">
@@ -156,8 +156,8 @@ export default function Dashboard() {
               </div>
             </div>
           )}
-          <Link to="/service/new">
-            <Button className="bg-indigo-600 hover:bg-indigo-700 text-white rounded-2xl font-bold shadow-lg shadow-indigo-600/20 px-6 h-11">
+          <Link to="/service/new" className="w-full sm:w-auto">
+            <Button className="bg-indigo-600 hover:bg-indigo-700 text-white rounded-2xl font-bold shadow-lg shadow-indigo-600/20 px-6 h-11 w-full">
               <Plus className="w-4 h-4 mr-2" />
               ახალი სერვისი
             </Button>
@@ -165,7 +165,7 @@ export default function Dashboard() {
         </div>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6 gap-6 mb-8">
+      <div className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-6 gap-3 sm:gap-6 mb-8 text-left">
         <StatCard 
           title="ავტომობილები" 
           value={stats.totalVehicles.toString()} 
