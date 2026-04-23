@@ -156,12 +156,13 @@ export default function Dashboard() {
               </div>
             </div>
           )}
-          <Link to="/service/new" className="w-full sm:w-auto">
-            <Button className="bg-indigo-600 hover:bg-indigo-700 text-white rounded-2xl font-bold shadow-lg shadow-indigo-600/20 px-6 h-11 w-full">
-              <Plus className="w-4 h-4 mr-2" />
-              ახალი სერვისი
-            </Button>
-          </Link>
+          <Button 
+            render={<Link to="/service/new" />}
+            className="bg-indigo-600 hover:bg-indigo-700 text-white rounded-2xl font-bold shadow-lg shadow-indigo-600/20 px-6 h-11 w-full"
+          >
+            <Plus className="w-4 h-4 mr-2" />
+            ახალი სერვისი
+          </Button>
         </div>
       </div>
 
@@ -273,9 +274,14 @@ export default function Dashboard() {
         <div className="lg:col-span-2 bg-white rounded-2xl border border-slate-200 shadow-sm flex flex-col overflow-hidden">
           <div className="p-6 border-b border-slate-100 flex items-center justify-between">
             <h4 className="font-black text-slate-800 uppercase tracking-wider text-xs">ავტოპარკის სტატუსი</h4>
-            <Link to="/fleet">
-              <Button variant="ghost" size="sm" className="text-indigo-600 font-bold hover:bg-indigo-50 rounded-xl">ყველას ნახვა</Button>
-            </Link>
+            <Button 
+              render={<Link to="/fleet" />}
+              variant="ghost" 
+              size="sm" 
+              className="text-indigo-600 font-bold hover:bg-indigo-50 rounded-xl"
+            >
+              ყველას ნახვა
+            </Button>
           </div>
           <div className="overflow-x-auto">
             <table className="w-full text-left">
@@ -330,9 +336,13 @@ export default function Dashboard() {
             )}
           </div>
           <div className="p-6 border-t border-slate-100">
-            <Link to="/maintenance">
-              <Button variant="outline" className="w-full h-11 text-[11px] font-black uppercase tracking-widest rounded-xl hover:bg-slate-50 transition-all">სრული ისტორია</Button>
-            </Link>
+            <Button 
+              render={<Link to="/maintenance" />}
+              variant="outline" 
+              className="w-full h-11 text-[11px] font-black uppercase tracking-widest rounded-xl hover:bg-slate-50 transition-all"
+            >
+              სრული ისტორია
+            </Button>
           </div>
         </div>
       </div>

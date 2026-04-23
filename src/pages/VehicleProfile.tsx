@@ -54,12 +54,13 @@ export default function VehicleProfile() {
           <ArrowLeft className="w-4 h-4 mr-2" />
           უკან ავტოპარკში
         </Button>
-        <Link to={`/fleet/${vehicleId}/service/new`} className="w-full sm:w-auto">
-          <Button className="w-full sm:w-auto bg-indigo-600 hover:bg-indigo-700 shadow-lg shadow-indigo-600/20 rounded-xl h-11 font-bold">
-            <Plus className="w-4 h-4 mr-2" />
-            ახალი სერვისი
-          </Button>
-        </Link>
+        <Button 
+          render={<Link to={`/fleet/${vehicleId}/service/new`} />}
+          className="w-full sm:w-auto bg-indigo-600 hover:bg-indigo-700 shadow-lg shadow-indigo-600/20 rounded-xl h-11 font-bold"
+        >
+          <Plus className="w-4 h-4 mr-2" />
+          ახალი სერვისი
+        </Button>
       </div>
 
       {/* Header Info */}
@@ -137,11 +138,14 @@ export default function VehicleProfile() {
                     <div className="flex-1 space-y-3">
                       <div className="flex items-start justify-between gap-4">
                         <p className="text-slate-700 text-sm sm:text-base leading-relaxed font-medium">{record.description}</p>
-                        <Link to={`/maintenance/${record.id}/edit`} className="shrink-0">
-                          <Button size="icon" variant="ghost" className="h-9 w-9 text-slate-400 hover:text-indigo-600 hover:bg-slate-50 border border-slate-100 rounded-xl">
-                            <Edit className="w-4 h-4" />
-                          </Button>
-                        </Link>
+                        <Button 
+                          render={<Link to={`/maintenance/${record.id}/edit`} />}
+                          size="icon" 
+                          variant="ghost" 
+                          className="h-9 w-9 text-slate-400 hover:text-indigo-600 hover:bg-slate-50 border border-slate-100 rounded-xl shrink-0"
+                        >
+                          <Edit className="w-4 h-4" />
+                        </Button>
                       </div>
                       <div className="flex flex-wrap items-center gap-4 py-3 border-t border-slate-50 mt-4">
                         <div className="flex items-center gap-1.5 text-[10px] sm:text-xs text-slate-400 font-bold uppercase tracking-tight">

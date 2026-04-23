@@ -46,12 +46,13 @@ export default function Fleet() {
           <h1 className="text-xl sm:text-2xl font-black text-slate-800 tracking-tight">ავტოპარკი</h1>
           <p className="text-xs sm:text-sm text-slate-500 font-medium">თქვენს ბაზაში არსებული ავტომობილები</p>
         </div>
-        <Link to="/fleet/new" className="w-full sm:w-auto">
-          <Button className="bg-indigo-600 hover:bg-indigo-700 w-full sm:w-auto h-11 rounded-xl font-bold shadow-lg shadow-indigo-600/20">
-            <Plus className="w-4 h-4 mr-2" />
-            ახალი ავტომობილი
-          </Button>
-        </Link>
+        <Button 
+          render={<Link to="/fleet/new" />}
+          className="bg-indigo-600 hover:bg-indigo-700 w-full sm:w-auto h-11 rounded-xl font-bold shadow-lg shadow-indigo-600/20"
+        >
+          <Plus className="w-4 h-4 mr-2" />
+          ახალი ავტომობილი
+        </Button>
       </div>
 
       <div className="relative">
@@ -96,18 +97,21 @@ export default function Fleet() {
             </div>
 
             <div className="flex items-center gap-2">
-              <Link to={`/fleet/${vehicle.id}/service/new`} className="flex-1">
-                <Button variant="outline" className="w-full h-10 border-emerald-100 text-emerald-600 font-bold text-xs rounded-xl hover:bg-emerald-50">
-                  <Wrench className="w-3.5 h-3.5 mr-2" />
-                  სერვისი
-                </Button>
-              </Link>
-              <Link to={`/fleet/${vehicle.id}`} className="flex-1">
-                <Button className="w-full h-10 bg-slate-900 text-white font-bold text-xs rounded-xl">
-                  <Eye className="w-3.5 h-3.5 mr-2" />
-                  პროფილი
-                </Button>
-              </Link>
+              <Button 
+                render={<Link to={`/fleet/${vehicle.id}/service/new`} />}
+                variant="outline" 
+                className="flex-1 h-10 border-emerald-100 text-emerald-600 font-bold text-xs rounded-xl hover:bg-emerald-50"
+              >
+                <Wrench className="w-3.5 h-3.5 mr-2" />
+                სერვისი
+              </Button>
+              <Button 
+                render={<Link to={`/fleet/${vehicle.id}`} />}
+                className="flex-1 h-10 bg-slate-900 text-white font-bold text-xs rounded-xl"
+              >
+                <Eye className="w-3.5 h-3.5 mr-2" />
+                პროფილი
+              </Button>
             </div>
           </div>
         ))}
@@ -148,18 +152,24 @@ export default function Fleet() {
                 </TableCell>
                 <TableCell className="text-right">
                   <div className="flex items-center justify-end gap-2">
-                    <Link to={`/fleet/${vehicle.id}/service/new`}>
-                      <Button variant="ghost" size="sm" className="h-9 px-3 text-emerald-600 hover:text-emerald-700 hover:bg-emerald-50 rounded-lg font-bold gap-1.5 transition-all">
-                        <Wrench className="w-3.5 h-3.5" />
-                        <span className="hidden sm:inline">ახალი სერვისი</span>
-                      </Button>
-                    </Link>
-                    <Link to={`/fleet/${vehicle.id}`}>
-                      <Button variant="ghost" size="sm" className="h-9 px-3 text-indigo-600 hover:text-indigo-700 hover:bg-indigo-50 rounded-lg font-bold gap-1.5 transition-all">
-                        <Eye className="w-3.5 h-3.5" />
-                        <span className="hidden sm:inline">პროფილი</span>
-                      </Button>
-                    </Link>
+                    <Button 
+                      render={<Link to={`/fleet/${vehicle.id}/service/new`} />}
+                      variant="ghost" 
+                      size="sm" 
+                      className="h-9 px-3 text-emerald-600 hover:text-emerald-700 hover:bg-emerald-50 rounded-lg font-bold gap-1.5 transition-all"
+                    >
+                      <Wrench className="w-3.5 h-3.5" />
+                      <span className="hidden sm:inline">ახალი სერვისი</span>
+                    </Button>
+                    <Button 
+                      render={<Link to={`/fleet/${vehicle.id}`} />}
+                      variant="ghost" 
+                      size="sm" 
+                      className="h-9 px-3 text-indigo-600 hover:text-indigo-700 hover:bg-indigo-50 rounded-lg font-bold gap-1.5 transition-all"
+                    >
+                      <Eye className="w-3.5 h-3.5" />
+                      <span className="hidden sm:inline">პროფილი</span>
+                    </Button>
                   </div>
                 </TableCell>
               </TableRow>

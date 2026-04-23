@@ -9,17 +9,39 @@ function Dialog({ ...props }: DialogPrimitive.Root.Props) {
   return <DialogPrimitive.Root data-slot="dialog" {...props} />
 }
 
-function DialogTrigger({ ...props }: DialogPrimitive.Trigger.Props) {
-  return <DialogPrimitive.Trigger data-slot="dialog-trigger" {...props} />
-}
+const DialogTrigger = React.forwardRef<
+  HTMLButtonElement,
+  DialogPrimitive.Trigger.Props
+>(({ render, ...props }, ref) => {
+  return (
+    <DialogPrimitive.Trigger
+      ref={ref}
+      data-slot="dialog-trigger"
+      render={render}
+      {...props}
+    />
+  )
+})
+DialogTrigger.displayName = "DialogTrigger"
 
 function DialogPortal({ ...props }: DialogPrimitive.Portal.Props) {
   return <DialogPrimitive.Portal data-slot="dialog-portal" {...props} />
 }
 
-function DialogClose({ ...props }: DialogPrimitive.Close.Props) {
-  return <DialogPrimitive.Close data-slot="dialog-close" {...props} />
-}
+const DialogClose = React.forwardRef<
+  HTMLButtonElement,
+  DialogPrimitive.Close.Props
+>(({ render, ...props }, ref) => {
+  return (
+    <DialogPrimitive.Close
+      ref={ref}
+      data-slot="dialog-close"
+      render={render}
+      {...props}
+    />
+  )
+})
+DialogClose.displayName = "DialogClose"
 
 function DialogOverlay({
   className,
@@ -58,7 +80,7 @@ function DialogContent({
       >
         {children}
         {showCloseButton && (
-          <DialogPrimitive.Close
+          <DialogClose
             data-slot="dialog-close"
             render={
               <Button
@@ -67,11 +89,12 @@ function DialogContent({
                 size="icon-sm"
               />
             }
+            nativeButton={true}
           >
             <XIcon
             />
             <span className="sr-only">Close</span>
-          </DialogPrimitive.Close>
+          </DialogClose>
         )}
       </DialogPrimitive.Popup>
     </DialogPortal>
@@ -107,9 +130,9 @@ function DialogFooter({
     >
       {children}
       {showCloseButton && (
-        <DialogPrimitive.Close render={<Button variant="outline" />}>
+        <DialogClose render={<Button variant="outline" />} nativeButton={true}>
           Close
-        </DialogPrimitive.Close>
+        </DialogClose>
       )}
     </div>
   )

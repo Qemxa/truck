@@ -219,11 +219,14 @@ export default function Maintenance() {
                 <div className="text-[10px] text-slate-400 font-bold uppercase italic">{record.mileage.toLocaleString()} კმ</div>
               </div>
               <div className="flex items-center gap-2">
-                <Link to={`/maintenance/${record.id}/edit`}>
-                  <Button size="icon" variant="ghost" className="h-9 w-9 text-slate-400 hover:text-indigo-600 hover:bg-indigo-50 border border-slate-100 rounded-xl">
-                    <Edit className="w-4 h-4" />
-                  </Button>
-                </Link>
+                <Button 
+                  render={<Link to={`/maintenance/${record.id}/edit`} />}
+                  size="icon" 
+                  variant="ghost" 
+                  className="h-9 w-9 text-slate-400 hover:text-indigo-600 hover:bg-indigo-50 border border-slate-100 rounded-xl"
+                >
+                  <Edit className="w-4 h-4" />
+                </Button>
                 <div className="flex items-center gap-2">
                   {isAdmin && record.status === 'pending' && (
                     <>
@@ -346,11 +349,14 @@ export default function Maintenance() {
                 <TableCell className="text-right">
                   <div className="flex flex-col items-end gap-1">
                     <div className="flex items-center gap-1">
-                      <Link to={`/maintenance/${record.id}/edit`}>
-                        <Button size="icon" variant="ghost" className="h-8 w-8 text-slate-400 hover:text-indigo-600 hover:bg-indigo-50">
-                          <Edit className="w-3.5 h-3.5" />
-                        </Button>
-                      </Link>
+                      <Button 
+                        render={<Link to={`/maintenance/${record.id}/edit`} />}
+                        size="icon" 
+                        variant="ghost" 
+                        className="h-8 w-8 text-slate-400 hover:text-indigo-600 hover:bg-indigo-50"
+                      >
+                        <Edit className="w-3.5 h-3.5" />
+                      </Button>
                       {isAdmin && record.status === 'pending' && (
                         <div className="flex items-center gap-1">
                           {record.previous_data && (

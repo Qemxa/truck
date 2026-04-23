@@ -126,10 +126,11 @@ const MainLayout = ({ children }: { children: React.ReactNode }) => {
           {/* Mobile Menu Trigger */}
           <div className="flex items-center gap-2 lg:hidden">
             <Sheet open={open} onOpenChange={setOpen}>
-              <SheetTrigger asChild>
-                <Button variant="ghost" size="icon" className="text-slate-600">
-                  <Menu className="w-6 h-6" />
-                </Button>
+              <SheetTrigger 
+                render={<Button variant="ghost" size="icon" className="text-slate-600" />}
+                nativeButton={true}
+              >
+                <Menu className="w-6 h-6" />
               </SheetTrigger>
               <SheetContent side="left" className="p-0 bg-[#0B0E14] border-none w-72">
                 <SheetHeader className="sr-only">
@@ -161,12 +162,13 @@ const MainLayout = ({ children }: { children: React.ReactNode }) => {
             <div className="relative hidden xl:block">
               <GlobalSearch />
             </div>
-            <Link to="/service/new">
-              <Button className="bg-indigo-600 hover:bg-indigo-700 text-white px-3 lg:px-8 h-10 lg:h-12 rounded-xl lg:rounded-2xl font-bold shadow-[0_10px_20px_rgba(79,70,229,0.3)] transition-all hover:scale-[1.03] active:scale-[0.97]">
-                <Plus className="w-4 h-4 lg:w-5 lg:h-5 mr-1 lg:mr-3" />
-                <span className="text-xs lg:text-base">ახალი</span>
-              </Button>
-            </Link>
+            <Button 
+              render={<Link to="/service/new" />}
+              className="bg-indigo-600 hover:bg-indigo-700 text-white px-3 lg:px-8 h-10 lg:h-12 rounded-xl lg:rounded-2xl font-bold shadow-[0_10px_20px_rgba(79,70,229,0.3)] transition-all hover:scale-[1.03] active:scale-[0.97]"
+            >
+              <Plus className="w-4 h-4 lg:w-5 lg:h-5 mr-1 lg:mr-3" />
+              <span className="text-xs lg:text-base">ახალი</span>
+            </Button>
           </div>
         </header>
 

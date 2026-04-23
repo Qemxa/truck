@@ -45,12 +45,13 @@ export default function Clients() {
           <h1 className="text-xl sm:text-2xl font-black text-slate-800 tracking-tight">კლიენტების ბაზა</h1>
           <p className="text-xs sm:text-sm text-slate-500 font-medium">თქვენი სერვისის მომხმარებლები</p>
         </div>
-        <Link to="/clients/new" className="w-full sm:w-auto">
-          <Button className="bg-indigo-600 hover:bg-indigo-700 w-full sm:w-auto h-11 rounded-xl font-bold shadow-lg shadow-indigo-600/20">
-            <Plus className="w-4 h-4 mr-2" />
-            ახალი კლიენტი
-          </Button>
-        </Link>
+        <Button 
+          render={<Link to="/clients/new" />}
+          className="bg-indigo-600 hover:bg-indigo-700 w-full sm:w-auto h-11 rounded-xl font-bold shadow-lg shadow-indigo-600/20"
+        >
+          <Plus className="w-4 h-4 mr-2" />
+          ახალი კლიენტი
+        </Button>
       </div>
 
       <div className="relative">
